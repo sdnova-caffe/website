@@ -123,7 +123,7 @@
       const emailInput = document.getElementById("contest-email");
       const formMessage = document.getElementById("form-message");
       const URL =
-        "https://script.google.com/macros/s/AKfycbzWL1NCVYVtg0YBufUcvlBmlUBWPMlXEaYEYy7VqUA0BxH-JLcLeidpJOAaMeMaqbGbfw/exec";
+        "https://script.google.com/macros/s/AKfycbwQDiiBQ-OhWTX5l6gvFWo5zG-zmhtKlgY4dwDk_d9OeQMlHSbgKAkGaM7mck7T2tGi7Q/exec";
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -144,11 +144,11 @@
           }
 
           formMessage.textContent = "Email został wysłany pomyślnie.";
-          formMessage.classList.add("success");
+          formMessage.className = "success";
           form.reset();
         } catch (error) {
           formMessage.innerHTML = "Coś&nbsp;poszło nie tak.";
-          formMessage.classList.add("error");
+          formMessage.className = "error";
         }
       });
     </script>
