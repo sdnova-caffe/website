@@ -44,6 +44,24 @@
         color: #ef4444;
       }
 
+      #form-message.loading::before {
+        content: "";
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid rgba(176, 166, 140, 0.35);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
       form {
         display: grid;
         gap: 0.75rem;
@@ -110,7 +128,7 @@
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         formMessage.textContent = "";
-        formMessage.className = "";
+        formMessage.className = "loading";
 
         const payload = { email: emailInput.value };
 
@@ -125,11 +143,11 @@
             throw new Error(`Status ${req.status}`);
           }
 
-          formMessage.textContent = "Success message";
+          formMessage.textContent = "Email został wysłany pomyślnie.";
           formMessage.classList.add("success");
           form.reset();
         } catch (error) {
-          formMessage.textContent = `Error: ${error.message}`;
+          formMessage.innerHTML = "Coś&nbsp;poszło nie tak.";
           formMessage.classList.add("error");
         }
       });
