@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Już wkrótce</title>
+    <title>Konkurs</title>
     <style>
       :root {
         --bg: #0e1226;
@@ -14,22 +14,124 @@
       body {
         margin: 0;
         min-height: 100vh;
-        display: grid;
-        place-items: center;
+        display: flex;
+        flex-direction: column;
         background-color: var(--bg);
         color: var(--text);
         font-family: Arial, sans-serif;
       }
 
       main {
+        flex: 1;
+        width: min(560px, 100% - 3rem);
+        margin: 0 auto;
+        display: grid;
+        place-content: center;
+        gap: 1rem;
         text-align: center;
         color: var(--accent);
+      }
+
+      h1,
+      p {
+        margin: 0;
+      }
+
+      form {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      label {
+        color: var(--text);
+      }
+
+      input,
+      button {
+        font: inherit;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--accent);
+      }
+
+      button {
+        cursor: pointer;
+        background: var(--accent);
+        color: #0e1226;
+        font-weight: 700;
+      }
+
+      a {
+        color: var(--text);
+      }
+
+      #form-message {
+        min-height: 1.25rem;
+        color: var(--text);
+      }
+
+      #form-message.success {
+        color: #b8f5c0;
+      }
+
+      #form-message.error {
+        color: #ffb4b4;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1.5rem 1rem;
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>Już wkrótce.</h1>
+      <h1>Wpisz email i weź udział w konkursie</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <form action="#" method="post">
+        <label for="contest-email">Adres e-mail</label>
+        <input id="contest-email" name="email" type="email" autocomplete="email" required />
+        <button type="submit">Wyślij</button>
+      </form>
+      <p id="form-message" role="status" aria-live="polite"></p>
+      <a href="/konkurs/zasady">Zasady konkursu</a>
     </main>
+    <footer>
+      <a href="/privacy-policy">Polityka prywatności</a>
+    </footer>
+    <script>
+      const form = document.querySelector("form");
+      const emailInput = document.getElementById("contest-email");
+      const formMessage = document.getElementById("form-message");
+      const URL =
+        "https://script.google.com/macros/s/AKfycbzWL1NCVYVtg0YBufUcvlBmlUBWPMlXEaYEYy7VqUA0BxH-JLcLeidpJOAaMeMaqbGbfw/exec";
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        formMessage.textContent = "";
+        formMessage.className = "";
+
+        const payload = { email: emailInput.value };
+
+        try {
+          var req = await fetch(URL, {
+            body: JSON.stringify(payload),
+            method: "POST",
+            headers: { "Content-Type": "text/plain" }
+          });
+
+          if (!req.ok) {
+            throw new Error(`Status ${req.status}`);
+          }
+
+          formMessage.textContent = "Success message";
+          formMessage.classList.add("success");
+          form.reset();
+        } catch (error) {
+          formMessage.textContent = `Error: ${error.message}`;
+          formMessage.classList.add("error");
+        }
+      });
+    </script>
   </body>
 </html>
